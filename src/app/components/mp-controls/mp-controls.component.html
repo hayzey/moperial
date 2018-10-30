@@ -1,3 +1,6 @@
-<button mat-button mat-stroked-button mat-icon-button (click)="togglePause()">
-    <mat-icon>play_arrow</mat-icon>
+<button mat-button mat-stroked-button mat-icon-button (click)="togglePlayback()">
+    <mat-icon *ngIf="playbackState === 'playing'">pause</mat-icon>
+    <mat-icon *ngIf="playbackState !== 'playing'">play_arrow</mat-icon>
 </button>
+
+<p>{{playbackState}}</p>
