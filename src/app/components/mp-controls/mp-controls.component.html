@@ -1,6 +1,15 @@
-<button mat-button mat-stroked-button mat-icon-button (click)="togglePlayback()">
-    <mat-icon *ngIf="playbackState === 'playing'">pause</mat-icon>
-    <mat-icon *ngIf="playbackState !== 'playing'">play_arrow</mat-icon>
-</button>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <button mat-button mat-icon-button (click)="previousOrRestart()">
+        <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button mat-button mat-stroked-button mat-icon-button (click)="togglePlayback()">
+        <mat-icon *ngIf="playbackState === 'playing'">pause</mat-icon>
+        <mat-icon *ngIf="playbackState !== 'playing'">play_arrow</mat-icon>
+    </button>
+    <button mat-button mat-icon-button (click)="next()">
+        <mat-icon>skip_next</mat-icon>
+    </button>
+</div>
 
-<p>{{playbackState}}</p>
+<!-- <p>{{playbackState}}</p>
+<p>{{getPlaybackPosition() | async}}</p> -->

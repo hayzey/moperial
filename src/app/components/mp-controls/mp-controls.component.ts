@@ -8,8 +8,9 @@ import { Observable, from } from 'rxjs';
 })
 export class MpControlsComponent implements OnInit {
     public playbackState: String = 'stopped';
+    public timeUntilTrackLocks : Number = 3000;
 
-    constructor(@Inject('Mopidy') private mopidy, private ngZone: NgZone) { }
+    constructor(@Inject('Mopidy') private mopidy, private ngZone: NgZone) {}
 
     play() {
         this.mopidy.playback.play();
@@ -35,6 +36,28 @@ export class MpControlsComponent implements OnInit {
         }
     }
 
+    next() {
+        this.mopidy.playback.next();
+    }
+
+    previous() {
+        this.mopidy.playback.previous();
+    }
+
+    getPlaybackPosition(): Observable<Number> {
+        return from(this.mopidy.playback.getTimePosition());
+    }
+
+    previousOrRestart() {
+        this.getPlaybackPosition().toPromise().then((playbackPosition) => {
+            if (playbackPosition < this.timeUntilTrackLocks) {
+                this.previous();
+            } else {
+                this.play();
+            }
+        });
+    }
+
     getPlaybackState(): Observable<String> {
         return from(this.mopidy.playback.getState());
     }
@@ -58,6 +81,19 @@ export class MpControlsComponent implements OnInit {
     ngOnInit() {
         this.setPlaybackStateListener();
         this.setPlaybackState();
+
+        this.getPlaybackPosition().subscribe({
+            next: (data) => {
+                console.log('ayy lmao', data, this.mopidy);
+            },
+            error: (err) => {
+                console.log('err', err);
+            }
+        });
+        // .error((err) => {
+        //     console.log('what');
+        //     console.log('err', err);
+        // })
     }
 
 }

@@ -14,13 +14,18 @@ export class MpMoperialComponent implements OnInit {
         return this.mopidyState === 'online';
     }
 
-    setMopidyStateListeners() : void {
+    setMopidyListeners() : void {
         this.mopidy.on('state:online', () => {
             this.setMopidyState('online');
         });
 
         this.mopidy.on('state:offline', () => {
             this.setMopidyState('offline');
+        });
+
+        this.mopidy.on('core.playback.get_time_position', (data) => {
+            console.log('time position', data);
+            // this.setMopidyState('online');
         });
     }
 
@@ -31,7 +36,7 @@ export class MpMoperialComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.setMopidyStateListeners();
+        this.setMopidyListeners();
     }
 
 }
